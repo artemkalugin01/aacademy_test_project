@@ -1,12 +1,12 @@
 import os
 import datetime
-from urllib.error import HTTPError
 
 import psycopg2
 from fastapi import APIRouter
 from pydantic.tools import parse_obj_as
 
-from Models.Resource import Resource
+from models.resource import Resource
+from utils.db_utils import connect_db
 
 """
 колонны таблицы resources в PostgreSQL
@@ -20,8 +20,7 @@ resources_router = APIRouter(prefix='/resources', tags=['resources'])
 
 @resources_router.get('', tags=['resources'])
 async def get_resources():
-    con = psycopg2.connect(database=os.getenv('DATABASE'), user=os.getenv('USER'), password=os.getenv('PASSWORD'),
-                           host=os.getenv('HOST'), port=os.getenv('PORT'))
+    con = connect_db()
     cur = con.cursor()
 
     cur.execute('SELECT * FROM resources')
@@ -39,8 +38,7 @@ async def get_resources():
 @resources_router.post('', tags=['resources'])
 async def post_resources(request: Resource):
     resource = parse_obj_as(Resource, request)
-    con = psycopg2.connect(database=os.getenv('DATABASE'), user=os.getenv('USER'), password=os.getenv('PASSWORD'),
-                           host=os.getenv('HOST'), port=os.getenv('PORT'))
+    con = connect_db()
     cur = con.cursor()
     cur.execute(
         f"INSERT INTO resources {resources_columns} VALUES ('{resource.title}', {resource.amount}, '{resource.unit}',"
@@ -53,8 +51,7 @@ async def post_resources(request: Resource):
 
 @resources_router.delete('', tags=['resources'])
 async def delete_resources(id: int):
-    con = psycopg2.connect(database=os.getenv('DATABASE'), user=os.getenv('USER'), password=os.getenv('PASSWORD'),
-                           host=os.getenv('HOST'), port=os.getenv('PORT'))
+    con = connect_db()
     cur = con.cursor()
 
     cur.execute(f"DELETE FROM resources WHERE id={id}")
@@ -64,8 +61,7 @@ async def delete_resources(id: int):
 
 @resources_router.put('', tags=['resources'])
 async def put_resources(id: int, amount: float, price: float, date: datetime.date, title: str, unit: str):
-    con = psycopg2.connect(database=os.getenv('DATABASE'), user=os.getenv('USER'), password=os.getenv('PASSWORD'),
-                           host=os.getenv('HOST'), port=os.getenv('PORT'))
+    con = connect_db()
     cur = con.cursor()
 
     cur.execute(
