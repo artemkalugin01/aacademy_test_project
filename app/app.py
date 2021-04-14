@@ -5,7 +5,8 @@ import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
-from endpoints import resources,total_cost
+from endpoints.total_cost import total_cost_router
+from endpoints.resources import resources_router
 
 # load env variables
 
@@ -19,8 +20,8 @@ con = psycopg2.connect(database=os.getenv('DATABASE'), user=os.getenv('USER'), p
                        host="127.0.0.1", port="5432")
 cur = con.cursor()
 
-app.include_router(resources.resources_router)
-app.include_router(total_cost.total_cost_router)
+app.include_router(resources_router)
+app.include_router(total_cost_router)
 
 
 @app.get("/")
