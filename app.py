@@ -5,8 +5,8 @@ import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
-from endpoints.total_cost import total_cost_router
 from endpoints.resources import resources_router
+from endpoints.total_cost import total_cost_router
 
 # load env variables
 
