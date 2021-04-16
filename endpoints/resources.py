@@ -1,9 +1,6 @@
-import os
 import datetime
 
-import psycopg2
 from fastapi import APIRouter
-from pydantic.tools import parse_obj_as
 
 from models.resource import Resource
 from utils.db_utils import connect_db
@@ -46,8 +43,6 @@ async def post_resources(resource: Resource):
     con.commit()
     con.close()
     return resource.dict(exclude={'id', 'cost'})
-
-
 
 
 @resources_router.delete('', tags=['resources'])
