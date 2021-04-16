@@ -5,6 +5,9 @@ from typing import Optional, List
 
 
 class Resource(BaseModel):
+    """
+    Модель данных Resource используемая в задании
+    """
     title: str
     id: Optional[int] = -1
     amount: float
@@ -17,7 +20,7 @@ class Resource(BaseModel):
     def default_ts_modified(cls, v, *, values, **kwargs):
         """
         Валидатор, присваивающий значение полю cost исходя из параметров amount & price
-        :param v: значение если передано
+        :param v: значение если передано, записывается без высчитывания
         :param values: поля
         :param kwargs:
         :return:
@@ -26,6 +29,11 @@ class Resource(BaseModel):
 
     @staticmethod
     def parse_from_db(values: List):
+        """
+        Вспомогательный метод чтения из БД
+        :param values: Лист параметров, возвращённый из БД
+        :return:
+        """
         r = Resource(id=values[0], title=values[1], amount=values[2], unit=values[3], price=values[4], date=values[5])
         return r
 
