@@ -28,7 +28,7 @@ app.include_router(total_cost_router)
 
 @app.get("/")
 async def root():
-    return {"message": "Hello Bigger Applications!"}
+    return {"message": "Тестовое задания для aacademy!"}
 
 
 if __name__ == "__main__":
