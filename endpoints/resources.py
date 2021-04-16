@@ -36,8 +36,7 @@ async def get_resources():
 
 
 @resources_router.post('', tags=['resources'])
-async def post_resources(request: Resource):
-    resource = parse_obj_as(Resource, request)
+async def post_resources(resource: Resource):
     con = connect_db()
     cur = con.cursor()
     cur.execute(
@@ -47,6 +46,8 @@ async def post_resources(request: Resource):
     con.commit()
     con.close()
     return resource.dict(exclude={'id', 'cost'})
+
+
 
 
 @resources_router.delete('', tags=['resources'])
