@@ -11,4 +11,6 @@ async def get_total_cost():
     cur = con.cursor()
     cur.execute("SELECT SUM(amount * price) FROM resources")
     total = cur.fetchone()[0]
+    if total is None:
+        return {'total_cost': 0}
     return {'total_cost': total}
