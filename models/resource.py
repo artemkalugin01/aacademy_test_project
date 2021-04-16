@@ -6,11 +6,11 @@ from typing import Optional, List
 
 class Resource(BaseModel):
     title: str
-    id: Optional[int]
+    id: Optional[int] = -1
     amount: float
     unit: str
     price: float
-    cost: float = 0
+    cost: Optional[float] = 0
     date: date
 
     @pydantic.validator('cost', pre=True, always=True)
@@ -24,11 +24,18 @@ class Resource(BaseModel):
         """
         return v or float(values['amount'] * values['price'])
 
-
     @staticmethod
-    def parse_from_db(values:List):
-        r = Resource(id=values[0],title=values[1],amount=values[2],unit=values[3],price=values[4],date=values[5])
+    def parse_from_db(values: List):
+        r = Resource(id=values[0], title=values[1], amount=values[2], unit=values[3], price=values[4], date=values[5])
         return r
 
-
-
+    class Config:
+        schema_extra = {
+            "example resource": {
+                "title": "str",
+                "amount": "float",
+                "unit": "str",
+                "price": "float",
+                "date": "date"
+            }
+        }
